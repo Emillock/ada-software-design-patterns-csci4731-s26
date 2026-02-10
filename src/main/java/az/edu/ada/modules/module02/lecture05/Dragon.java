@@ -1,57 +1,49 @@
-class GameObject{
-    protected String texture;
-    protected String model;
-    protected String coords;
-    protected String scale;
-}
+package az.edu.ada.modules.module02.lecture05;
 
-class memoryManager{
-    public static String loadFile(String path){
-        System.out.println("loaded "+path);
-        // Thread.sleep(500);
-        return path;
-    }
-}
+import java.util.ArrayList;
+import java.util.List;
 
-class Dragon extends GameObject{
-    String texturePath;
-    String modelPath;
-    String soundPath;
-    String sound;
-    
-    public Dragon(String texturePath, String modelPath, String soundPath, String coords, String scale){
-        this.texturePath=texturePath;
-        this.modelPath=modelPath;
-        this.soundPath=soundPath;
-        this.coords=coords;
-        this.scale=scale;
-    }
-    
-    public void loadFromDisc(){
-        this.texture = memoryManager.loadFile(texturePath);
-        this.model = memoryManager.loadFile(modelPath);
-        this.sound = memoryManager.loadFile(soundPath);
-    }
-    
-    public String getTexture(){
-        return this.texture;
-    }
-    
-    public String getModel(){
-        return this.model;
-    }
-    
-    public String getSound(){
-        return this.sound;
-    }
-}
+public class Dragon implements Cloneable {
 
-class Main {
-    public static void main(String[] args) {
-        Dragon dragon = new Dragon("texPath", "modelPath", "soundPath", "0,0,0", "1,1,1");
-        dragon.loadFromDisc();
-        System.out.println(dragon.getTexture());
-        System.out.println(dragon.getModel());
-        System.out.println(dragon.getSound());
+    private final String name;
+    private final String color;
+    private final String texture;
+    private final String sound;
+    private List<String> treasureChest;
+
+    public Dragon(String name, String color, List<String> treasureChest) throws InterruptedException {
+        this.name = name;
+        this.color = color;
+        this.treasureChest = treasureChest;
+        this.texture = loadTexture();
+        this.sound = loadSound();
+    }
+
+    private String loadTexture() throws InterruptedException {
+        System.out.println("Loading texture... I/O operation here");
+        Thread.sleep(2000);
+        return "Texture";
+    }
+
+    private String loadSound() throws InterruptedException {
+        System.out.println("Loading sound... I/O operation here");
+        Thread.sleep(3000);
+        return "Sound";
+    }
+
+    public Dragon clone() throws CloneNotSupportedException {
+        Dragon dragon = (Dragon) super.clone();
+        dragon.treasureChest=new ArrayList<>(treasureChest);
+        return dragon;
+    }
+
+    @Override
+    public String toString() {
+        return "Dragon{name='%s', color='%s', texture='%s', sound='%s', treasureChest='%s'}"
+                .formatted(name, color, texture, sound, treasureChest);
+    }
+
+    public List<String> getTreasureChest() {
+        return treasureChest;
     }
 }
