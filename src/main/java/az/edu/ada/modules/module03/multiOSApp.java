@@ -1,16 +1,47 @@
 class Main{
     public static void main(String[] args){
-        Button buttonWin = new ButtonWin();
-        buttonWin.click();
-        Button buttonMac = new ButtonMac();
-        buttonMac.click();
         
-        Checkbox checkboxMac = new CheckboxMac();
-        checkboxMac.check();
-        Checkbox checkboxWin = new CheckboxWin();
-        checkboxWin.check();
+        
+        OSFactory winF = new OSFactoryWin();
+        winF.getButton().click();
     }
 }
+
+abstract class OSFactory{
+    
+    public abstract Button getButton();
+    
+    public abstract Checkbox getCheckbox();
+}
+
+public class OSFactoryWin extends OSFactory{
+    
+    @Override
+    public Button getButton(){
+        return new ButtonWin();
+    };
+    
+    @Override
+    public Checkbox getCheckbox(){
+        return new CheckboxMac();
+    };
+}
+
+public class OSFactoryMac extends OSFactory{
+    
+    @Override
+    public Button getButton(){
+        return new ButtonMac();
+    };
+    
+    @Override
+    public Checkbox getCheckbox(){
+        return new CheckboxMac();
+    };
+}
+
+
+
 
 abstract class Button{
     public abstract void click();
