@@ -1,22 +1,24 @@
 package az.edu.ada.modules.module02.lecture05;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Dragon implements Cloneable {
+public class Dragon {
 
     private final String name;
     private final String color;
     private final String texture;
     private final String sound;
-    private List<String> treasureChest;
 
-    public Dragon(String name, String color, List<String> treasureChest) throws InterruptedException {
+    public Dragon(String name, String color) throws InterruptedException {
         this.name = name;
         this.color = color;
-        this.treasureChest = treasureChest;
         this.texture = loadTexture();
         this.sound = loadSound();
+    }
+
+    private Dragon(String name, String color, String texture, String sound) {
+        this.name = name;
+        this.color = color;
+        this.texture = texture;
+        this.sound = sound;
     }
 
     private String loadTexture() throws InterruptedException {
@@ -31,19 +33,13 @@ public class Dragon implements Cloneable {
         return "Sound";
     }
 
-    public Dragon clone() throws CloneNotSupportedException {
-        Dragon dragon = (Dragon) super.clone();
-        dragon.treasureChest=new ArrayList<>(treasureChest);
-        return dragon;
+    public Dragon clone() {
+        return new Dragon(this.name, this.color, this.texture, this.sound);
     }
 
     @Override
     public String toString() {
-        return "Dragon{name='%s', color='%s', texture='%s', sound='%s', treasureChest='%s'}"
-                .formatted(name, color, texture, sound, treasureChest);
-    }
-
-    public List<String> getTreasureChest() {
-        return treasureChest;
+        return "Dragon{name='%s', color='%s', texture='%s', sound='%s'}"
+                .formatted(name, color, texture, sound);
     }
 }
