@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jacoco'
 }
 
 group = 'az.edu.ada'
@@ -15,6 +16,42 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-test {
+tasks.named('test', Test) {
     useJUnitPlatform()
+    include "**/module03/asg01/**"
+    finalizedBy tasks.named('jacocoTestReport')
+}
+
+tasks.named('jacocoTestReport', JacocoReport) {
+    dependsOn tasks.named('test')
+    reports {
+        html.required = true
+        xml.required = true
+    }
+
+    classDirectories.setFrom(
+            fileTree(
+                    dir: new File(buildDir, "classes/java/main/az/edu/ada"),
+                    includes: ["**/module03/asg01/**"],
+                    excludes: [
+                            "**/intro/**",
+                            "**/labs/**",
+                            "**/modules/module01/**",
+                            "**/modules/module02/**",
+                            "**/modules/module04/**",
+                            "**/module03/asg01/Main*"
+                    ]
+            )
+    )
+
+    sourceDirectories.setFrom(
+            fileTree(
+                    dir: "src/main/java",
+                    includes: ["**/module03/asg01/**"]
+            )
+    )
+
+    executionData.setFrom(
+            new File(buildDir, "jacoco/test.exec")
+    )
 }
